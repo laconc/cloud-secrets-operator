@@ -1,2 +1,11 @@
 # cloud-secrets-operator
-A Kubernetes operator for managing AWS Secrets Manager secrets and creating Kubernetes Secrets from them.
+
+A Kubernetes operator for managing Kubernetes Secrets and the associated AWS Secrets Manager secrets.
+
+## Development
+
+### Build CRDs
+
+```shell
+make crdgen
+```
