@@ -1,6 +1,5 @@
 use cloudsecrets::{CloudSecret, CloudSecretProvider};
 use kube::CustomResourceExt;
-use serde_yaml;
 use std::env;
 
 fn main() {

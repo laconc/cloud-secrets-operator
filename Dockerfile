@@ -2,15 +2,13 @@ FROM public.ecr.aws/docker/library/rust:1.83-alpine AS base
 
 WORKDIR /usr/src/app
 
-ENV USER=appuser
-
 RUN adduser \
     --disabled-password \
     --gecos "" \
     --home "/nonexistent" \
     --shell "/sbin/nologin" \
     --no-create-home \
-    "$USER"
+    appuser
 
 COPY ./app/Cargo.toml ./app/Cargo.lock ./
 
@@ -23,7 +21,7 @@ RUN mkdir src && \
 
 COPY ./app/src ./src
 
-RUN cargo build --release
+RUN cargo build --release --bin operator
 
 # ----------------
 FROM gcr.io/distroless/base AS app
