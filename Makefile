@@ -4,7 +4,7 @@ crdgen:
 	RUST_BACKTRACE=1 cargo run --bin crdgen -- CloudSecretProvider > ../deploy/crds/cloud_secret_provider.yaml
 
 docker-build:
-	docker build -t cloud-secret-provider:latest .
+	docker build -t cloud-secret-operator:latest .
 
 lint:
 	cd app; \
