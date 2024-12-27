@@ -27,6 +27,9 @@ pub struct CloudSecretSpec {
     /// Optional name for the Kubernetes Secret; if not provided, the CloudSecret name is used.
     pub secret_name: Option<String>,
 
+    /// Description of the secret.
+    pub description: Option<String>,
+
     /// Configuration of the source for the secret data.
     pub source: SourceSpec,
 
@@ -34,8 +37,8 @@ pub struct CloudSecretSpec {
     #[serde(default)]
     pub strict: Option<bool>,
 
-    /// Optional list of keys with actions that should be applied to each key.
-    /// If an action is set for a key, it will override the action specified at the global level.
+    /// Optional list of keys and actions that can be applied to them.
+    /// If an action is set for a key, it will override the action specified at the secret level.
     pub keys: Option<Vec<KeySpec>>,
 
     /// Refresh interval for syncing the secret data, e.g., '3m' or '1h'.
@@ -43,7 +46,7 @@ pub struct CloudSecretSpec {
     #[schemars(regex(pattern = r"^\d+[mhd]$"))]
     pub refresh_interval: Option<String>,
 
-    /// Actions to perform on the secret keys. These are global actions that apply to all keys.
+    /// Actions to perform on the secret keys. These actions apply to all the keys.
     pub actions: Option<ActionsSpec>,
 }
 
@@ -64,8 +67,11 @@ pub struct KeySpec {
     /// The name of the key in the source provider.
     pub name: String,
 
-    /// Optional new name for the key to use in the Kubernetes Secret. If not provided, the source name is used.
+    /// Optional new name to use in the Kubernetes Secret. If not provided, the source name is used.
     pub new_name: Option<String>,
+
+    /// Description of the key.
+    pub description: Option<String>,
 
     /// Rotation interval for this key, e.g., '90d'. If specified, the operator will rotate this key according to the defined interval.
     #[schemars(regex(pattern = r"^\d+[mhd]$"))]
@@ -124,7 +130,7 @@ pub struct CloudSecretStatus {
 #[serde(rename_all = "camelCase")]
 pub struct CloudSecretStatusCondition {
     /// The type of the condition.
-    pub type_: CloudSecretStatusType,
+    pub _type: CloudSecretStatusType,
 
     /// The status of the condition. Valid values are 'True', 'False', or 'Unknown'.
     pub status: ConditionStatus,
@@ -188,6 +194,9 @@ pub enum CloudSecretStatusReason {
     }"#
 )]
 pub struct CloudSecretProviderSpec {
+    /// Description of the provider.
+    pub description: Option<String>,
+
     /// Configuration for the secrets provider.
     pub provider: ProviderSpec,
 }
