@@ -31,6 +31,5 @@ verify-crds:
 		|| (echo "ERROR: The CloudSecretProvider CRD is out of date, please regenerate the CRDs locally with 'make crdgen'."; exit 1)
 
 lint:
-	cd app; \
-	cargo clippy --all-targets --all-features -- -D warnings; \
-	cargo fmt --all -- --check
+	cd app && cargo clippy --all-targets --all-features -- -D warnings
+	cd app && cargo fmt --all -- --check
