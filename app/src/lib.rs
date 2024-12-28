@@ -57,23 +57,24 @@ fn default_refresh_interval() -> Option<String> {
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct SourceSpec {
-    /// The identifier used in the source provider.
+    /// Identifier used in the source provider.
     pub name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct KeySpec {
-    /// The name of the key in the source provider.
+    /// Name of the key in the source provider.
     pub name: String,
 
     /// Optional new name to use in the Kubernetes Secret. If not provided, the source name is used.
-    pub new_name: Option<String>,
+    pub target_name: Option<String>,
 
     /// Description of the key.
     pub description: Option<String>,
 
-    /// Rotation interval for this key, e.g., '90d'. If specified, the operator will rotate this key according to the defined interval.
+    /// Rotation interval for this key, e.g., '90d'. If present, the operator will rotate
+    /// this key at the specified interval.
     #[schemars(regex(pattern = r"^\d+[mhd]$"))]
     pub rotate_interval: Option<String>,
 
@@ -97,17 +98,17 @@ pub struct ActionsSpec {
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ActionSpec {
-    /// A regex pattern for the key's value.
+    /// Regex pattern for the key's value.
     pub pattern: Option<String>,
 
     /// Container specification for external validation logic on the key.
     pub container: Option<Container>,
 
-    /// The minimum length for the key's value.
+    /// Minimum length for the key's value.
     #[schemars(range(min = 0))]
     pub minimum: Option<u64>,
 
-    /// The maximum length for the key's value.
+    /// Maximum length for the key's value.
     #[schemars(range(min = 1))]
     pub maximum: Option<u64>,
 }
@@ -115,13 +116,16 @@ pub struct ActionSpec {
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct CloudSecretStatus {
+    /// Name of the managed Kubernetes Secret.
+    pub target_secret_name: String,
+
     /// List of conditions describing the current state of the CloudSecret.
     pub conditions: Vec<CloudSecretStatusCondition>,
 
-    /// The last time the secret was successfully synced.
+    /// Last time the secret was successfully synced.
     pub last_sync_time: Option<String>,
 
-    /// The version ID of the source secret.
+    /// Version ID of the source secret.
     pub version_id: Option<String>,
 }
 
@@ -129,19 +133,19 @@ pub struct CloudSecretStatus {
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct CloudSecretStatusCondition {
-    /// The type of the condition.
+    /// Type of the condition.
     pub _type: CloudSecretStatusType,
 
-    /// The status of the condition. Valid values are 'True', 'False', or 'Unknown'.
+    /// Status of the condition.
     pub status: ConditionStatus,
 
-    /// The generation observed when the condition was set.
+    /// Generation observed when the condition was set.
     pub observed_generation: i64,
 
-    /// The last time this condition transitioned.
+    /// Last time this condition transitioned.
     pub last_transition_time: String,
 
-    /// A human-readable message indicating details about the transition.
+    /// Human-readable message indicating details about the transition.
     pub message: String,
 
     /// Reason for the condition's last transition.
@@ -210,18 +214,28 @@ pub struct CloudSecretProviderStatus {
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct CloudSecretProviderStatusCondition {
-    pub type_: CloudSecretProviderStatusType,
+    /// Type of the condition.
+    pub _type: CloudSecretProviderStatusType,
+
+    /// Status of the condition.
     pub status: ConditionStatus,
+
+    /// Generation observed when the condition was set.
     pub observed_generation: i64,
+
+    /// Last time this condition transitioned.
     pub last_transition_time: String,
+
+    /// Human-readable message indicating details about the transition.
     pub message: String,
+
+    /// Reason for the condition's last transition.
     pub reason: Option<CloudSecretProviderStatusReason>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 pub enum CloudSecretProviderStatusType {
     Ready,
-    Reconciling,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
@@ -235,7 +249,7 @@ pub enum CloudSecretProviderStatusReason {
 pub enum ProviderSpec {
     /// Configuration for AWS Secrets Manager.
     AwsSecretsManager {
-        /// The AWS region.
+        /// AWS region.
         region: String,
         /// Optional authentication configuration for AWS.
         auth: Option<AwsAuthConfig>,
@@ -254,8 +268,8 @@ pub struct AwsAuthConfig {
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct IrsaConfig {
-    /// The name of the Kubernetes ServiceAccount to use for IRSA.
+    /// Name of the Kubernetes ServiceAccount to use for IRSA.
     pub secret_name: Option<String>,
-    /// The ARN of the IAM role to assume.
+    /// ARN of the IAM role to assume.
     pub role_arn: Option<String>,
 }
