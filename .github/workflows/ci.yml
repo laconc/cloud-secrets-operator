@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    name: Lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Lint
+        shell: bash
+        timeout-minutes: 5
+        run: make lint
+
+  verify-crds:
+    runs-on: ubuntu-24.04
+    name: Verify CRDs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Verify CRDs
+        shell: bash
+        timeout-minutes: 2
+        run: make verify-crds

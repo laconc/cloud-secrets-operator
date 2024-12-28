@@ -134,7 +134,7 @@ pub struct CloudSecretStatus {
 #[serde(rename_all = "camelCase")]
 pub struct CloudSecretStatusCondition {
     /// Type of the condition.
-    pub _type: CloudSecretStatusType,
+    pub type_: CloudSecretStatusType,
 
     /// Status of the condition.
     pub status: ConditionStatus,
@@ -215,7 +215,7 @@ pub struct CloudSecretProviderStatus {
 #[serde(rename_all = "camelCase")]
 pub struct CloudSecretProviderStatusCondition {
     /// Type of the condition.
-    pub _type: CloudSecretProviderStatusType,
+    pub type_: CloudSecretProviderStatusType,
 
     /// Status of the condition.
     pub status: ConditionStatus,

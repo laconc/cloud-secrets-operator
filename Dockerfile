@@ -35,6 +35,7 @@ LABEL org.opencontainers.image.title="cloud-secrets-operator" \
       org.opencontainers.image.authors="Dashiel Lopez Mendez <hi@64f.dev>" \
       org.opencontainers.image.url="https://github.com/laconc/cloud-secrets-operator" \
       org.opencontainers.image.source="https://github.com/laconc/cloud-secrets-operator" \
+      org.opencontainers.image.documentation="https://github.com/laconc/cloud-secrets-operator/blob/${GIT_REF}/README.md" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.revision="${GIT_REF}" \

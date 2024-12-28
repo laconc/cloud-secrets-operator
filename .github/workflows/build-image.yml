@@ -1,0 +1,39 @@
+name: Build and push image
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  IMAGE_NAME: quay.io/laconc/cloud-secrets-operator
+  IMAGE_TAG: dev
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    name: Build and push image
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Login to Quay.io
+        run: |
+          echo "${{ secrets.QUAY_PASSWORD }}" | docker login -u "${{ secrets.QUAY_USERNAME }}" --password-stdin
+
+      - name: Build image
+        run: |
+          make build-image \
+            IMAGE_NAME=${{ env.IMAGE_NAME }} \
+            IMAGE_TAG=${{ env.IMAGE_TAG }} \
+            GIT_REF=${{ github.sha }}
+
+#      - name: Push image
+#        if: github.event_name == 'push'
+#        run: |
+#          docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
