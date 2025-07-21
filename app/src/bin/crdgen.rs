@@ -19,11 +19,8 @@ fn main() {
             serde_yaml::to_string(&crd)
                 .expect("Failed to serialize CloudSecretProvider CRD to YAML")
         }
-        _ => panic!(
-            "Invalid CRD type: {}. Use 'CloudSecret' or 'CloudSecretProvider'.",
-            crd_type
-        ),
+        _ => panic!("Invalid CRD type: {crd_type}. Use 'CloudSecret' or 'CloudSecretProvider'."),
     };
 
-    println!("{}", yaml);
+    println!("{yaml}");
 }

@@ -1,9 +1,13 @@
-use cloudsecrets::CloudSecret;
-use kube::Client;
+use axum::{Router, routing::get};
 
 #[tokio::main]
 async fn main() {
-    let client = Client::try_default()
+    let app = Router::new().route("/livez", get(|| async {}));
+
+    let port = "6000";
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{port}"))
         .await
-        .expect("Failed to create Kubernetes client");
+        .unwrap();
+
+    axum::serve(listener, app).await.unwrap();
 }
