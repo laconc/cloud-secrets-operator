@@ -90,7 +90,7 @@ spec:
 
 ## Development
 
-### Build CRDs
+### Regenerate CRDs
 
 After making changes to the CRD specs at [app/src/crds.rs](app/src/crds.rs), you can regenerate the CRD manifests with:
 
