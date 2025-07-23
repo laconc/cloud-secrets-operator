@@ -1,6 +1,6 @@
 # cloud-secrets-operator
 
-**_Note: This project is under active development. Interfaces, features, and behavior may change frequently. Not all functionality is currently implemented._**
+**_Note: This project is under active development. Features and behavior may change frequently. Not all functionality has been implemented._**
 
 ## Overview
 
@@ -16,6 +16,8 @@ It introduces two custom resource definitions (CRDs): `CloudSecret` and `CloudSe
 - Support for custom generation, rotation, and validation logic via containers
 
 ## Getting Started
+
+Will be fleshed out in a future release.
 
 ## Custom Resources
 
@@ -57,16 +59,33 @@ spec:
     name: my-aws-secret
   providerRef:
     name: aws-provider
-  strict: true
+  strict: true # If true, only the specified keys must exist in the external source
   refreshInterval: 5m
+  actions:
+    create:
+      minimum: 32
+      maximum: 96
+    rotate:
+      minimum: 32
+      maximum: 96
   keys:
-    - name: APP_PASSWORD
+    - name: APP_PASSWORD # Uses the global `actions` config
+      rotateInterval: 7d
+
+    - name: API_TOKEN # We define per-key config, which overrides the global config
       rotateInterval: 90d
       actions:
         create:
-          pattern: "^[a-zA-Z0-9]{16,}$"
+          pattern: "^[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}$"
+        rotate:
+          pattern: "^[A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12}$"
+
+    - name: ENCRYPTION_KEY # Assumes the key was explicitly added in the external source. Won't be automatically rotated.
+      actions:
         validate:
-          pattern: "^[a-zA-Z0-9]{16,}$"
+          container:
+            image: my-validation-image:latest
+            command: ["./validate-secret"]
 ```
 
 ## Development

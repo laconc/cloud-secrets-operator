@@ -105,7 +105,7 @@ pub struct ActionSpec {
     pub container: Option<Container>,
 
     /// Minimum length for the key's value.
-    #[schemars(range(min = 0))]
+    #[schemars(range(min = 1))]
     pub minimum: Option<u64>,
 
     /// Maximum length for the key's value.
