@@ -2,28 +2,22 @@
 
 **_Note: This project is under active development. Interfaces, features, and behavior may change frequently. Not all functionality is currently implemented._**
 
-## ⚙️ Overview
+## Overview
 
 The operator provides a declarative interface for managing secrets from external secret sources (such as AWS Secrets Manager) and syncing them into your cluster as Kubernetes Secrets, with built-in support for secret generation, rotation, and validation.
 
 It introduces two custom resource definitions (CRDs): `CloudSecret` and `CloudSecretProvider`.
 
----
+## Features
 
-## ✨ Features
+- Declarative secret syncing from external providers to Kubernetes Secrets
+- Automatic periodic syncing and optional key rotation
+- Fine-grained control over individual secret keys
+- Support for custom generation, rotation, and validation logic via containers
 
-- ✅ Declarative secret syncing from external providers to Kubernetes Secrets
-- 🔄 Automatic periodic syncing and optional key rotation
-- ✅ Fine-grained control over individual secret keys
-- 🔒 Support for custom generation, rotation, and validation logic via containers
+## Getting Started
 
----
-
-## 📦 Getting Started
-
----
-
-## 🧩 Custom Resources
+## Custom Resources
 
 ### `CloudSecretProvider`
 
@@ -74,8 +68,6 @@ spec:
         validate:
           pattern: "^[a-zA-Z0-9]{16,}$"
 ```
-
----
 
 ## Development
 
