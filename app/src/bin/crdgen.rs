@@ -1,4 +1,4 @@
-use cloudsecrets::{CloudSecret, CloudSecretProvider};
+use cloudsecrets::crds::{CloudSecret, CloudSecretProvider};
 use kube::CustomResourceExt;
 use std::env;
 
