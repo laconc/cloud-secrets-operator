@@ -24,8 +24,9 @@ use serde::{Deserialize, Serialize};
     }"#
 )]
 pub struct CloudSecretSpec {
-    /// Optional name for the Kubernetes Secret; if not provided, the CloudSecret name is used.
-    pub secret_name: Option<String>,
+    /// Optional list of Kubernetes Secrets to manage. If not provided, a Secret with the same name
+    /// as the CloudSecret will be created in the same namespace.
+    pub targets: Option<Vec<TargetSpec>>,
 
     /// Description of the secret.
     pub description: Option<String>,
@@ -52,6 +53,16 @@ pub struct CloudSecretSpec {
 
 fn default_refresh_interval() -> Option<String> {
     Some("3m".to_string())
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub struct TargetSpec {
+    /// Optional name for the Kubernetes Secret; if not provided, the CloudSecret name is used.
+    pub name: Option<String>,
+
+    /// Optional namespace for the Kubernetes Secret; if not provided, the current namespace is used.
+    pub namespace: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, JsonSchema)]
