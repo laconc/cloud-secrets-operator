@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/rust:1.88-alpine AS base
+FROM public.ecr.aws/docker/library/rust:1.89-alpine AS base
 
 WORKDIR /usr/src/app
 

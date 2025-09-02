@@ -54,7 +54,9 @@ kind: CloudSecret
 metadata:
   name: my-app-secret
 spec:
-  secretName: my-k8s-secret
+  targets:
+    - name: my-k8s-secret
+      namespace: current-namespace
   source:
     name: my-aws-secret
   providerRef:
